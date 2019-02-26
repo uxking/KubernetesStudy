@@ -1,0 +1,14 @@
+# sleep-10.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: sleep10
+spec:
+  template:
+    spec:
+      containers:
+      - name: sleep10
+        image: busybox
+        command: ["sleep", "10"]
+      restartPolicy: Never
+  backoffLimit: 4
