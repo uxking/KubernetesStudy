@@ -186,5 +186,30 @@ Ingress:
 
 Jobs are applications to run inside pods. Good for batch processing
 Running Jobs:
-`kubectl create -f <filename.yaml>
+`kubectl create -f <filename.yaml>`
 
+Running Pods:
+`kubectl apply -f <filename.yaml>`
+
+### Other Deployments
+- Minikube Single node k8s cluster on local workstation
+- Kubeadm - multi-node localy, but challenging
+	- Would need own CNI (Cluster Network Interface)
+- Ubuntu on LXD 9 cluster host on local machine
+- Of course, google, azure, AWS, IBM, etc...
+- Turnkey solutions are available on cloud providers
+### Add-on
+- CNI - calico, l3 networking
+- Canal - unites Flanel and Calico
+- Contiv - native L3 BGP (open source)
+- Flannel - Overlay network provider
+- Multus - multi plugin for multiple network support
+- NSX-T integrates VMWare NXT
+
+#### Cluster Management
+`kubectl get pods`
+`kubectl describe pods`
+`kubectl get nodes`
+`kubectl describe nodes`
+`kubectl describe <node|pod|etc> <name>`
+`kubectl get pods --namespace=kube-system`
