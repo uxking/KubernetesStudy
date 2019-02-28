@@ -207,9 +207,9 @@ Running Pods:
 - NSX-T integrates VMWare NXT
 
 #### Cluster Management
-`kubectl get pods`
-`kubectl describe pods`
-`kubectl get nodes`
-`kubectl describe nodes`
-`kubectl describe <node|pod|etc> <name>`
-`kubectl get pods --namespace=kube-system`
+`kubectl get pods`  
+`kubectl describe pods`  
+`kubectl get nodes`  
+`kubectl describe nodes`  
+`kubectl describe <node|pod|etc> <name>`  
+`kubectl get pods --namespace=kube-system`  
