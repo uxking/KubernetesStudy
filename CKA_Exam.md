@@ -276,13 +276,13 @@ Running Pods:
 	- `touch /var/log/kube-aiserver.log`
 	- create a /srv/kubernetes/ dir on each node
 	- Add files
-		basic_auth.csv
-		ca.crt
-		known_tokens.csv
-		kubecft.crt
-		kubecfg.key
-		server.cert
-		server.key
+		- basic_auth.csv
+		- ca.crt
+		- known_tokens.csv
+		- kubecft.crt
+		- kubecfg.key
+		- server.cert
+		- server.key
 	- Create manually or copy from master noded on a working cluster
 	- copy `kube-apiserver.yaml` in to `/etc/kubernetes/manifists` on each of the master nodes
 	- kubelet monitors and will create an instance of kube-apiserver container using definition in `yaml` file.
@@ -298,3 +298,14 @@ Running Pods:
 		- touch `hhh/var/log/kube-scheduler.log` and `/var/log/kube-controller-manager.log`
 		- copy `kube-scheduler.yaml` and `kube-controller-manager.yaml` to `/etc/kubernetes/manifests/`
 	- Should be all that is needed to go HA 
+### Validating Nodes and Cluster
+- End-to-end testing
+	- Primarily a dev tool
+	- GCE has its own
+	- juju-deployed tests
+- Kubetest Suite
+	- aws or gce
+	build, stage, extract, bring up cluster, teardown, etc..
+- `kubectl get nodes`
+- `kubectl describe node <nodename>`
+
