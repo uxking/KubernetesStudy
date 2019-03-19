@@ -213,3 +213,88 @@ Running Pods:
 `kubectl describe nodes`  
 `kubectl describe <node|pod|etc> <name>`  
 `kubectl get pods --namespace=kube-system`  
+### Hardware
+- Nodes can be physical or virtual
+- Need common network, 443 communication to the internet can work
+- Flannel is needed to allow pods to communicat (or other networking application)
+- Will use overlay network
+- Understand the relationship between master and nodes
+- kubectl can be installed on local machine - not only the master
+### Securing Communications
+- To API, control-plane and pod-to-pod
+- All goes through API driver
+- Defauilt encryption is TLS
+- Most installs handle certificate creation
+- Some methods might enable local ports over HTTP - doublecheck
+- All that connect to API should be authenticated
+- Once, authentciated, every API call should pass an auth check
+- Role-Based Access
+	- K8s has RBAC that maps users to roles
+	- Certain roles can perform specific actions
+	- Several roles already created
+	- Namespaces can be used to limit role access
+	- Can create resources via a deployment (but may not have access to create a pod), can be tricky here.
+- Securing the Kubelet
+	- Do on each node
+	- Expose HTTPS endpoints wich give access to both data and actions - by default they are open
+	- use `--anonymous-auth=false` flag and use x509 certs in the configuration
+- Restrict access to the network via a namespace
+- Network policies would be needed
+- Pod CNI must respect policies - most do, read documentation of add-on
+- Can assign quotas or limit ranges to users
+	- Some plugins may be found
+- Other vulnerabilities
+	- Etcd - stores configuration and secrets - strong creds needed here
+		- maybe secure behind a firewall
+	- Audit logging - in beta
+		- Records actions taken by the API
+		- move audit logs to secure location
+- Rotate infrastructure credentails regularly
+	- tools can be used to automate this
+- Always review 3rd party integrations
+	- don't allow them access to the  kube-system namespace
+### HA
+- Create reliable nodes
+- Setup redundant storage with multinode deployment of etcd
+- Start replicated and load balanced API servers
+- Setup master-elected k8s scheduler and controller manager daemons
+- all communications to the master API server needs to go via the load balancer
+- First Steps
+	- Master node reliability
+	- auto restart
+	- kubelet already does this, so if kubelet goes down, need to restart it
+	- monit, systems, systemctl tools are good tools for this on the linux side
+- Second Step
+	- need persistant, redunant storage
+	- Clusted etcd already replicates to master instances in the cluster
+	- all master nodes would need lose disk
+	- increase size of cluster to help mitigate
+	- possibly use cloud providers persitant disk
+	- physical machines, nfs, or iSCSI, or gluster or ceph
+- Third Step
+	- need a log file for docker to mount
+	- `touch /var/log/kube-aiserver.log`
+	- create a /srv/kubernetes/ dir on each node
+	- Add files
+		basic_auth.csv
+		ca.crt
+		known_tokens.csv
+		kubecft.crt
+		kubecfg.key
+		server.cert
+		server.key
+	- Create manually or copy from master noded on a working cluster
+	- copy `kube-apiserver.yaml` in to `/etc/kubernetes/manifists` on each of the master nodes
+	- kubelet monitors and will create an instance of kube-apiserver container using definition in `yaml` file.
+	- Should have 3 API servers at this point
+	- Setup load blancer will depend on specifis
+	- For external users of API (kubectl, pipelins, other clients) need to talk to external load balancers IP Address
+- Fourth Step
+	- Allow state changes (use lease-lock)
+	- Controller managers and scheduler launched with flag `--leader-elect` flag
+	- best to configure commuinications to load balanced IP address of API server (accessing the API via 127.0.0.0 may be problematic if node is unavaiable
+- Installing thes configs
+	- create empy files on each node that docker will mount
+		- touch `hhh/var/log/kube-scheduler.log` and `/var/log/kube-controller-manager.log`
+		- copy `kube-scheduler.yaml` and `kube-controller-manager.yaml` to `/etc/kubernetes/manifests/`
+	- Should be all that is needed to go HA 

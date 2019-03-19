@@ -1,0 +1,16 @@
+# alpine-pod1.yaml
+#
+apiVersion: v1
+kind: Pod
+metadata:
+  name: alpine
+  namespace: default
+spec:
+  containers:
+  - name: alpine
+    image: alpine
+    command:
+    - sleep
+    - "3600"
+    imagePullPolicy: IfNotPresent
+  restartPolicy: Always
