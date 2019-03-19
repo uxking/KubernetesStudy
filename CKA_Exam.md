@@ -293,9 +293,9 @@ Running Pods:
 	- Allow state changes (use lease-lock)
 	- Controller managers and scheduler launched with flag `--leader-elect` flag
 	- best to configure commuinications to load balanced IP address of API server (accessing the API via 127.0.0.0 may be problematic if node is unavaiable
-- Installing thes configs
-	- create empy files on each node that docker will mount
-		- touch `hhh/var/log/kube-scheduler.log` and `/var/log/kube-controller-manager.log`
+- Installing these configs
+	- create empty files on each node that docker will mount
+		- touch `/var/log/kube-scheduler.log` and `/var/log/kube-controller-manager.log`
 		- copy `kube-scheduler.yaml` and `kube-controller-manager.yaml` to `/etc/kubernetes/manifests/`
 	- Should be all that is needed to go HA 
 ### Validating Nodes and Cluster
@@ -308,4 +308,3 @@ Running Pods:
 	build, stage, extract, bring up cluster, teardown, etc..
 - `kubectl get nodes`
 - `kubectl describe node <nodename>`
-
