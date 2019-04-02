@@ -319,4 +319,28 @@ Running Pods:
 	- get the rollout history
 	- `kubectl rollout history deployment apache-deployment`
 	- `kubeclt rollout undo deployment apache-deployment --to-revision=<revNumber>`  
+### Config Maps
+- Create configmaps via yaml or command line
+	- `kubectl create configmaps apache-map --from-literal=key=value` use keyValue pair  
+	- `kubectl apply -f apache-map.yaml` if using a yaml file  
+ - pods will use variables defined from config maps via the yaml definitions
+`
+apiVersion: v1
+kind: Pod
+metadata:
+  name: apache-pod
+spec:
+  containers:
+  - name: apache-container
+    image: apache:1.9
+    command: ['httpd', '-d', "$(debugLevel) &"]
+    env:
+    - name: debugLevel
+      valueFrom:
+        configMapKeyRef:
+          name: apache-config-map
+          key: 3
+`
+- `kubectl apply -f apache-pod.yaml`  
+- `kubectl logs apache-pod.yaml` to verify variable assignment  
 
