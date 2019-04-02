@@ -308,3 +308,15 @@ Running Pods:
 	build, stage, extract, bring up cluster, teardown, etc..
 - `kubectl get nodes`
 - `kubectl describe node <nodename>`
+### Deployments, Rolling Updates, Rollbacks
+- Create a deployment .yaml file  
+- `kubectl create -f apache-deployment.yaml`
+- Update the deployment via command line
+- `kubectl set image deployment apache-deployment apache=apache:1.3` apache is the image in the deployment  
+- Update by editing the yaml file and applying change
+- `kubectl apply apache-deployment.yaml`  
+- Rollback a deployment
+	- get the rollout history
+	- `kubectl rollout history deployment apache-deployment`
+	- `kubeclt rollout undo deployment apache-deployment --to-revision=<revNumber>`  
+
